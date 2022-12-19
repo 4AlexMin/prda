@@ -44,8 +44,6 @@ point_markers = {
 }
 prda.graphic.lineplot_html(df, x='idx', y=['a', 'b'], markpoints=point_markers, filepath='demo_lineplot.html')
 ```
-
-And code with the below DataFrame will draw anther plot look like this:
 |     |  idx  |   a  |   b  |
 |:---:|:-----:|:----:|:----:|
 |  0  |  0.0  | 0.00 |  6.0 |
@@ -55,14 +53,15 @@ And code with the below DataFrame will draw anther plot look like this:
 | 498 | 498.0 | 9.96 | 14.0 |
 | 499 | 499.0 | 9.98 | 10.0 |
 
+And code with the above DataFrame will draw anther plot look like this:
 
 ![lineplot_screenshot.png](demo/lineplot_screenshot.png)
 
 [demo_lineplot.html](/demo/demo_lineplot.html)
 
+### Although the current *prda* is far from completion, let along perfection. It is under improvement regularly.
+
 ----
-
-## Although the current *prda* is far from completion, let along perfection. It is under improvement regularly.
-
-## You are welcome to clone *prda* for personal use (to use, simply add the folder to your system path) and **pull request** of your modification is super!! encouraged.
+## How to Use
+### You are welcome to clone *prda* for personal use (**to use, simply add the folder to your system path**) and **pull request** of your modification is super!! encouraged.
 

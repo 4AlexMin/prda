@@ -35,6 +35,20 @@ def __random_color():
         rgb += color_arr[random.randint(0,14)]
     return rgb
 
+def __format_digit(x):
+    """Formatting a single digit. \
+        This is necessary as "pyechats" sometimes generates unexpected output if number is not in the right format.
+
+    Parameters
+    ----------
+    x : interger, real or str
+        single value to be formatted.
+    """
+    if type(x) == str:
+        return x
+    else:
+        return round(np.float64(x), 3)
+
 def assign_colors(x, colormap=None, return_colormap=False):
     """
     Map discrete sequence from discrete values to colors. If `np.nan` contains, treated as a seperate class.
@@ -71,9 +85,8 @@ def assign_colors(x, colormap=None, return_colormap=False):
         return y
 
 
-def lineplot_html(data: pd.DataFrame, x: str = None, y: list = None, markpoints: dict = None, title='lineplot', filepath=None):
-    """
-    Draw lineplot using columns in `data`
+def lineplot_html(data: pd.DataFrame, x: str = None, y: list = None, markpoints: dict = None, title='lineplot', filepath=None) -> None:
+    """Draw lineplot using columns in `data`
 
     Parameters
     ----------
@@ -83,26 +96,29 @@ def lineplot_html(data: pd.DataFrame, x: str = None, y: list = None, markpoints:
         column to be used as x, if x=`None` then use index_col as default. by default None
     y : list[str], optional
         column to be used as y, if y=`None` then use every columns in `data`. by default None
+    markpoints : dict, optional
+        emphasize points in several specific lines, in the form of `{column: points}` by default None
     title : str, optional
-        _description_, by default 'lineplot'
+        figure title, by default 'lineplot'
     filepath : _type_, optional
         _description_, by default None
     """
+
 
     filepath = __process_path(title, filepath, suffix='html')
     
     # Get data for x,y axis.
     if x == None:
-        x_data = [str(_) for _ in data.index.to_list()]
+        x_data = [__format_digit(_) for _ in data.index.to_list()]
     else:
-        x_data = [str(_) for _ in data.loc[:, x]]
+        x_data = [__format_digit(_) for _ in data.loc[:, x]]
     y_datas = dict()
     if y == None:
         for col in data.columns:
-            y_datas[col] = [round(_, 3) for _ in data.loc[:, col]]
+            y_datas[col] = [__format_digit(_) for _ in data.loc[:, col]]
     else:
         for col in y:
-            y_datas[col] = [round(_, 3) for _ in data.loc[:, col]]
+            y_datas[col] = [__format_digit(_) for _ in data.loc[:, col]]
     
     # Draw lineplot here
     lineplot = Line(init_opts=opts.InitOpts(width="1600px", height="800px"))
@@ -110,7 +126,7 @@ def lineplot_html(data: pd.DataFrame, x: str = None, y: list = None, markpoints:
     for k, v in y_datas.items():
         if markpoints:
             if k in markpoints.keys():
-                markpoint_items = [opts.MarkPointItem(coord=[str(point[0]), point[1]]) for point in markpoints[k]]
+                markpoint_items = [opts.MarkPointItem(coord=[__format_digit(point[0]), __format_digit(point[1])]) for point in markpoints[k]]
             else:
                 markpoint_items = []
             

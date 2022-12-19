@@ -59,9 +59,9 @@ And code with the above DataFrame will draw anther plot look like this:
 
 [demo_lineplot.html](/demo/demo_lineplot.html)
 
-### Although the current *prda* is far from completion, let along perfection. It is under improvement regularly.
+Although the current *prda* is far from completion, let along perfection. It is under improvement regularly.
 
 ----
 ## How to Use
-### You are welcome to clone *prda* for personal use (**to use, simply add the folder to your system path**) and **pull request** of your modification is super!! encouraged.
+You are welcome to clone *prda* for personal use (**to use, simply add the folder to your system path**) and **pull request** of your modification is super!! encouraged.
 

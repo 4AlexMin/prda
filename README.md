@@ -6,6 +6,8 @@ Prda ultimate goal is to **fill the “last mile” between analysts and package
 
 To utilize prda, you only need to be familiar with `pandas` as most inputs is `pd.DataFrame`.
 
+----
+
 ## For example：
 
 ```python
@@ -44,8 +46,15 @@ prda.graphic.lineplot_html(df, x='idx', y=['a', 'b'], markpoints=point_markers, 
 ```
 
 And code with the below DataFrame will draw anther plot look like this:
+|     |  idx  |   a  |   b  |
+|:---:|:-----:|:----:|:----:|
+|  0  |  0.0  | 0.00 |  6.0 |
+|  1  |  1.0  | 0.02 | 13.0 |
+|  2  |  2.0  | 0.04 | 10.0 |
+| ... |  ...  |  ... |  ... |
+| 498 | 498.0 | 9.96 | 14.0 |
+| 499 | 499.0 | 9.98 | 10.0 |
 
-![Image.png](/demo/demo_lineplot_df.png)
 
 ![lineplot_screenshot.png](demo/lineplot_screenshot.png)
 
@@ -53,7 +62,7 @@ And code with the below DataFrame will draw anther plot look like this:
 
 ----
 
-Although the current *prda* is far from completion, let along perfection. It is under improvement regularly.
+## Although the current *prda* is far from completion, let along perfection. It is under improvement regularly.
 
-You are welcome to clone *prda* for personal use (to use, simply add the folder to your system path) and **pull request** of your modification is super!! encouraged.
+## You are welcome to clone *prda* for personal use (to use, simply add the folder to your system path) and **pull request** of your modification is super!! encouraged.
 

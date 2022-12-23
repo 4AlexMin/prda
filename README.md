@@ -20,7 +20,7 @@ prda.graphic.scatter_3d_html(df, x='a', y='b', z='c', color_hue='d', size_hue='e
 
 the above code will provide an interactive html figure that look like this:
 
-![Image.png](/demo/3d_scatter_screenshot.png)
+![Image.png](/demo/demo_3d_scatter_screenshot.png)
 
 [demo_3d_scatter.html](/demo/demo_3d_scatter.html)
 
@@ -33,7 +33,7 @@ import numpy as np
 datalen = 500
 indices = np.arange(datalen)
 col_a = np.arange(0, 10, 10/datalen)
-col_b = np.random.randint(0, 15, datalen)
+col_b = np.random.randint(3, 8, datalen)
 data = np.array([indices, col_a, col_b]).T
 df = pd.DataFrame(data=data, columns=['idx', 'a', 'b'])
 
@@ -47,15 +47,15 @@ prda.graphic.lineplot_html(df, x='idx', y=['a', 'b'], markpoints=point_markers, 
 |     |  idx  |   a  |   b  |
 |:---:|:-----:|:----:|:----:|
 |  0  |  0.0  | 0.00 |  6.0 |
-|  1  |  1.0  | 0.02 | 13.0 |
-|  2  |  2.0  | 0.04 | 10.0 |
+|  1  |  1.0  | 0.02 | 3.0 |
+|  2  |  2.0  | 0.04 | 4.0 |
 | ... |  ...  |  ... |  ... |
-| 498 | 498.0 | 9.96 | 14.0 |
-| 499 | 499.0 | 9.98 | 10.0 |
+| 498 | 498.0 | 9.96 | 6.0 |
+| 499 | 499.0 | 9.98 | 5.0 |
 
 And code with the above DataFrame will draw anther plot look like this:
 
-![lineplot_screenshot.png](demo/lineplot_screenshot.png)
+![lineplot_screenshot.png](demo/demo_lineplot_screenshot.png)
 
 [demo_lineplot.html](/demo/demo_lineplot.html)
 

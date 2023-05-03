@@ -19,6 +19,8 @@ def get_files(relative_path='data/'):
     _type_
         _description_
     """
+    if relative_path[-1] != '/':
+        relative_path += '/'
     paths = os.listdir(relative_path)
     dirs = []
     for pathname in paths:

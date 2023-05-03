@@ -65,3 +65,8 @@ Although the current *prda* is far from completion, let along perfection. It is 
 ## How to Use
 You are welcome to clone *prda* for personal use (**to use, simply add the folder to your system path**) and **pull request** of your modification is super!! encouraged.
 
+
+
+----
+## 2023.5.3 Major Updates
+Add several easy-to-use functions, including **prep::**pca, select_continuous_variables, handle_missing_data, apply_linear_func(row-wisely), and **ml::**match_clusters, evaluate_param_combinations(optimal parameters searching, with base class::sklearn.base.BaseEstimator), etc.

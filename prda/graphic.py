@@ -10,8 +10,9 @@ import pandas as pd
 import pyecharts.options as opts
 import seaborn as sns
 from pyecharts.charts import Line, Scatter3D
+from lifelines import KaplanMeierFitter
 
-__all__ = ['assign_colors', 'lineplot_html', 'scatter_3d_html', 'heatmap']
+__all__ = ['random_color', 'assign_colors', 'lineplot_html', 'scatter_3d_html', 'heatmap', 'survival_plot', 'box_whisker_plot']
 
 def __make_path(fpath):
     if '/' in fpath:
@@ -27,8 +28,14 @@ def __process_path(title: str, filepath: str, suffix='png')-> None:
         __make_path(filepath)
     return filepath
 
+def __handle_axes(ax, log_: bool = False):
+    if not ax:
+        fig, ax = plt.subplots(1,1,figsize=(12,8))
+    if log_:
+        ax.set_xscale("log")
+    return ax
 
-def __random_color():
+def random_color():
     color_arr = ['1','2','3','4','5','6','7','8','9','A','B','C','D','E','F']
     rgb = "#"
     for i in range(6):
@@ -64,18 +71,22 @@ def assign_colors(x, colormap=None, return_colormap=False):
     if colormap is None:
         val_uniques = set()
         val_uniques.update(y)
-        colormap = {val: __random_color() for val in val_uniques}
+        colormap = {val: random_color() for val in val_uniques}
     
     # map sequence using `colormap`
     if type(y) == pd.Series:
+        
+        # Manually assign a color for nan
         if y.hasnans:
             nan_color = '#EFEFEF'
-            y.fillna(nan_color, inplace=True)
+            y.fillna(nan_color, inplace=True)  # Now y doesnot contains np.nan
             colormap[nan_color] = nan_color
-            colormap[np.nan] = nan_color
-            # y.fillna(color_map[np.nan], inplace=True) #KeyError
-        y = y.apply(lambda val: colormap[val]) # Now y doesnot contains np.nan
-        colormap.pop(nan_color, None)
+
+            y = y.apply(lambda val: colormap[val])
+            colormap.pop(nan_color, None)
+
+        else:
+            y = y.apply(lambda val: colormap[val])
     else:
         y = [colormap[val] for val in y]
     
@@ -180,7 +191,7 @@ def scatter_3d_html(data: pd.DataFrame, x: str, y: str, z: str, color_hue: str =
     size_hue : str, optional
         scatter size indicator,also a column name of `data`, by default None
     title : str, optional
-        _description_, by default 'scatter_3d'
+        title within the plot, by default 'scatter_3d'
     filepath : str, optional
         _description_, by default None
 
@@ -253,7 +264,7 @@ def scatter_3d_html(data: pd.DataFrame, x: str, y: str, z: str, color_hue: str =
     scatter.render(filepath)
     
 
-def heatmap(data: pd.DataFrame, title: str = 'correlation_heatmap', filepath=None) -> None:
+def heatmap(data: pd.DataFrame, annot: bool = True, ax=None, title: str = 'correlation_heatmap', filepath=None) -> None:
     """
     Currently, only support drawing correlation heatmap along `data` columns.
 
@@ -261,6 +272,9 @@ def heatmap(data: pd.DataFrame, title: str = 'correlation_heatmap', filepath=Non
     ----------
     data : pd.DataFrame
         _description_
+    annot : bool
+        If True, write the data value in each cell.\
+        Note that DataFrames will match on position, not index, by default True.
     title : str
         title of figure
     """
@@ -274,16 +288,104 @@ def heatmap(data: pd.DataFrame, title: str = 'correlation_heatmap', filepath=Non
     mask = np.triu(np.ones_like(data_corr, dtype=np.bool))
 
     # Set up the matplotlib figure
-    f, ax = plt.subplots(figsize=(25, 15))
+    # f, ax = plt.subplots(figsize=(25, 15))
 
     # Generate a custom diverging colormap
     cmap = sns.diverging_palette(220, 10, as_cmap=True)
 
-    # Draw the heatmap with the mask and correct aspect ratio 
-    sns.heatmap(data_corr, cmap=cmap,  center=0,mask = mask,
-                square=True, linewidths=.5, cbar_kws={"shrink": .5}, xticklabels = data.columns, yticklabels = data.columns)
+    # Draw the heatmap with the mask and correct aspect ratio
+    ax = __handle_axes(ax)
+    sns.heatmap(
+        data_corr, 
+        cmap=cmap, 
+        center=0, 
+        mask = mask, 
+        annot=annot,       
+        square=True, 
+        linewidths=.5, 
+        cbar_kws={"shrink": .5}, 
+        xticklabels = data.columns, 
+        yticklabels = data.columns,
+        ax=ax
+        )
+    plt.title(title)
+    plt.savefig(filepath, dpi=600, bbox_inches = 'tight')
 
-    ax.set_title(title)
-    plt.savefig(filepath, dpi = 800,bbox_inches = 'tight')
+
+def survival_plot(data, duration: str, status: str, hue: str, alpha: float = 0.05, ax=None, filepath='survial_analysis_plot.png'):
+    """Plot Kaplan-Meier estimate for the survival analysis.
+
+    Parameters
+    ----------
+    data : pd.DataFrame
+        _description_
+    duration : str
+        column name for survial duration.
+    status : str
+        column name indicating survial status.
+    hue : str
+        column name for individual types.
+    alpha : float, optional
+        The alpha value associated with the confidence intervals, by default 0.05.
+    ax : matplotlib Axes, optional
+        _description_, by default None
+    filepath : str, optional
+        _description_, by default 'survial_analysis_plot.png'
+    """
+    ax = __handle_axes(ax)
+    ax.set_xlabel('Survival Time', fontdict={'size': 16})
+    ax.set_ylabel('Overall Survival', fontdict={'size': 16})
+    
+    # Kaplan-Meier estimation
+    kmf = KaplanMeierFitter(alpha=alpha)
+    for type in data.loc[:, hue].unique():
+        popul = data.loc[data.HE == type]
+        kmf.fit(durations=popul.loc[:, duration], event_observed=popul.loc[:, status], label=type)
+        kmf.plot(ax=ax)
+
+    plt.savefig(filepath, dpi=600)
 
 
+def box_whisker_plot(data: pd.DataFrame, usecols=None, whis: float = 1.5, observations: bool = True, ax=None, filepath='box_and_whisker_plot.png'):
+    """Draw box plot (or box-and-whisker plot) shows the distribution of quantitative data.
+
+    Parameters
+    ----------
+    data : pd.DataFrame
+        Treated as long-form data.
+    usecols : _type_, optional
+        the columns to draw as y-axis, if `None`, use all columns, by default None
+    whis : float, optional
+        Maximum length of the plot whiskers as `proportion` of the interquartile range. \
+        Whiskers extend to the furthest datapoint within that range. More extreme points are marked as outliers, by default 1.5
+    observations : bool, optional
+        Whether draw observations, by default True
+    ax : matplotlib Axes, optional
+        _description_, by default None
+    filepath : str, optional
+        _description_, by default 'box_and_whisker_plot.png'
+    
+    References
+    ----------
+    [1] Horizontal boxplot with observations — seaborn 0.12.2 documentation. https://seaborn.pydata.org/examples/horizontal_boxplot.html.
+
+    """
+    sns.set_theme(style="ticks")
+    ax = __handle_axes(ax)
+    if not usecols:
+        view = data
+    else:
+        view = data.loc[:, usecols]
+
+    # Plot the orbital period with horizontal boxes
+    sns.boxplot(data=view, whis=whis, fliersize=0.5, width=.6, palette="vlag", orient='h')
+
+    # Add in points to show each observation
+    if observations:
+        sns.stripplot(data=view, size=.5, linewidth=0, palette="gray", orient='h')
+
+    # Tweak the visual presentation
+    ax.xaxis.grid(True)
+    sns.despine(trim=True, left=True)
+
+    plt.savefig(filepath, dpi=600)

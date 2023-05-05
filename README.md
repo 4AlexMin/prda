@@ -63,7 +63,9 @@ Although the current *prda* is far from completion, let along perfection. It is 
 
 ----
 ## How to Use
-pip install prda==1.0.0
+```
+pip install prda
+```
 See details in: https://pypi.org/project/prda/1.0.0/
 
 You are welcome to clone *prda* for personal use (**to use, simply add the folder to your system path**) and **pull request** of your modification is super!! encouraged.

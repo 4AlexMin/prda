@@ -4,11 +4,25 @@
 
 Prda ultimate goal is to **fill the “last mile” between analysts and packages**. During my research practice, I have felt how “learning a package before utilizing” can be time-consuming and exhausting. The resulted inefficiency leads to the creation of *prda*.
 
-To utilize prda, you only need to be familiar with `pandas` as most inputs is `pd.DataFrame`.
+## How to Use
+```
+pip install prda
+```
+
+See details in: https://pypi.org/project/prda/
+
+You are welcome to clone *prda* for personal use (**to use, simply add the folder to your system path**) and **pull request** of your modification is super!! encouraged.
 
 ----
 
-## For example：
+
+~~To utilize prda, you only need to be familiar with `pandas` as most inputs is `pd.DataFrame`.~~
+
+Currently with the help of **ChatGPT**, you can just tailor the input of demonstration code below to your data. And you don't need to be familiar with pandas or even python.
+
+
+
+## Examples
 
 ```python
 import prda
@@ -62,16 +76,6 @@ And code with the above DataFrame will draw anther plot look like this:
 Although the current *prda* is far from completion, let along perfection. It is under improvement regularly.
 
 ----
-## How to Use
-```
-pip install prda
-```
-See details in: https://pypi.org/project/prda/1.0.0/
-
-You are welcome to clone *prda* for personal use (**to use, simply add the folder to your system path**) and **pull request** of your modification is super!! encouraged.
-
-
-
-----
-## 2023.5.3 Major Updates
+## Updates
+### 2023.5.3 Major Updates
 Add several easy-to-use functions, including `prep::`pca, select_continuous_variables, handle_missing_data, apply_linear_func(row-wisely), and `ml::`match_clusters, evaluate_param_combinations(optimal parameters searching, with base class::sklearn.base.BaseEstimator), etc.

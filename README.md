@@ -11,7 +11,7 @@ pip install prda
 
 See details in: https://pypi.org/project/prda/
 
-You are welcome to clone *prda* for personal use (**to use, simply add the folder to your system path**) and **pull request** of your modification is super!! encouraged.
+You are welcome to clone *prda* for personal use and **pull request** of your modification is super!! encouraged.
 
 ----
 

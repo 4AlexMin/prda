@@ -7,7 +7,7 @@ import numpy as np
 
 __all__ = ['normalization', 'convert_df', 'drop_first_n', 'pca', 'handle_missing_data', 'select_continuous_variables', 'apply_linear_func']
         
-def normalization(data: np.ndarray, min_: float = 0, max_: float = 1.0, bias: float = 0.1)-> np.ndarray:
+def normalization(data: np.ndarray, min_: float = 0, max_: float = 1.0, bias: float = 0)-> np.ndarray:
     """
     Scaling data to lie between a given minimum and maximum value (MinMaxScaler).
 
@@ -23,6 +23,7 @@ def normalization(data: np.ndarray, min_: float = 0, max_: float = 1.0, bias: fl
     Parameters
     ----------
     data : numpy.ndarray
+        ndarray as original shape
     """
     data = np.asarray(data)
     datalen = 1

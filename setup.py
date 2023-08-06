@@ -6,10 +6,11 @@ with open('LICENSE', 'r') as f:
 
 setup(
     name='prda',
-    version='1.0.2',
+    version='1.1.1',
     author='Shaojie Min',
     author_email='alexmin@cqu.edu.cn',
     description='Prda contains packages for data processing, analysis and visualization. The ultimate goal is to fill the “last mile” between analysts and packages.',
+    readme='README.md',
     url='https://github.com/4AlexMin/prda',
     license=license,
     packages=find_packages(),

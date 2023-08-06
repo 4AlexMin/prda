@@ -54,7 +54,9 @@ def __format_digit(x):
     if type(x) == str:
         return x
     else:
-        return round(np.float64(x), 3)
+        return round(np.float64(x), 5)
+
+
 
 def assign_colors(x, colormap=None, return_colormap=False):
     """
@@ -120,9 +122,9 @@ def lineplot_html(data: pd.DataFrame, x: str = None, y: list = None, markpoints:
     
     # Get data for x,y axis.
     if x == None:
-        x_data = [__format_digit(_) for _ in data.index.to_list()]
+        x_data = [str(__format_digit(_)) for _ in data.index.to_list()]
     else:
-        x_data = [__format_digit(_) for _ in data.loc[:, x]]
+        x_data = [str(__format_digit(_)) for _ in data.loc[:, x]]
     y_datas = dict()
     if y == None:
         for col in data.columns:

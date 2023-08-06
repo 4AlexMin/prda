@@ -34,9 +34,15 @@ prda.graphic.scatter_3d_html(df, x='a', y='b', z='c', color_hue='d', size_hue='e
 
 the above code will provide an interactive html figure that look like this:
 
-![Image.png](/demo/demo_3d_scatter_screenshot.png)
 
-[demo_3d_scatter.html](/demo/demo_3d_scatter.html)
+
+<iframe src="demo/demo_lineplot.html" width="500" height="300"></iframe>
+
+
+
+<!-- ![Image.png](/demo/demo_3d_scatter_screenshot.png) -->
+
+<!-- [demo_3d_scatter.html](/demo/demo_3d_scatter.html) -->
 
 ----
 
@@ -69,9 +75,11 @@ prda.graphic.lineplot_html(df, x='idx', y=['a', 'b'], markpoints=point_markers, 
 
 And code with the above DataFrame will draw anther plot look like this:
 
-![lineplot_screenshot.png](demo/demo_lineplot_screenshot.png)
+<iframe src="demo/demo_lineplot.html" width="500" height="300"></iframe>
 
-[demo_lineplot.html](/demo/demo_lineplot.html)
+<!-- ![lineplot_screenshot.png](demo/demo_lineplot_screenshot.png) -->
+
+<!-- [demo_lineplot.html](/demo/demo_lineplot.html) -->
 
 Although the current *prda* is far from completion, let along perfection. It is under improvement regularly.
 

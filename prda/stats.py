@@ -1,10 +1,11 @@
-""" The :mod:`prda.utility` contains ``what you might use`` when handling your data.
+""" The :mod:`prda.stats` contains ``what you might use`` when handling your data.
 """
 
 import random
 import numpy as np
 import pandas as pd
 from scipy.stats import anderson, kstest
+from sklearn.neighbors import KernelDensity
 
 __all__ = ['nlargest_dict', 'get_distribution', 'classify_indices', 'gussian_test', 'choice_weighted', 'classify_indices']
 
@@ -117,3 +118,35 @@ def get_distribution(popul, popul_type: str = 'continuous', n_intervals: int=Non
     return distribution
 
 
+def compute_probabilities(X, h=0.5):
+    """_summary_
+
+    Parameters
+    ----------
+    X : _type_
+        _description_
+    h : float, optional
+        bandwidth of Gaussian kernel, by default 0.5
+
+    Returns
+    -------
+    _type_
+        _description_
+    """
+    if X.ndim == 1:
+        X = X.reshape(-1, 1)
+    
+    # Create a Kernel Density Estimator
+    kde = KernelDensity(kernel='gaussian', bandwidth=h)
+
+    # Fit the KDE model to the data
+    kde.fit(X)
+
+    # Evaluate the KDE model on the data points
+    log_probabilities = kde.score_samples(X)
+
+    # Convert log probabilities to probabilities
+    probabilities = np.exp(log_probabilities)
+    normalized_probabilities = probabilities / np.sum(probabilities)
+
+    return normalized_probabilities

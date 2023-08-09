@@ -273,12 +273,12 @@ def heatmap(data: pd.DataFrame, annot: bool = True, ax=None, title: str = 'corre
     Parameters
     ----------
     data : pd.DataFrame
-        _description_
+        The input data.
     annot : bool
         If True, write the data value in each cell.\
         Note that DataFrames will match on position, not index, by default True.
     title : str
-        title of figure
+        Title of figure.
     """
     filepath = __process_path(title, filepath)
 

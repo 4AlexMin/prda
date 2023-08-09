@@ -4,7 +4,7 @@
 
 Prda ultimate goal is to **fill the “last mile” between analysts and packages**. During my research practice, I have felt how “learning a package before utilizing” can be time-consuming and exhausting. The resulted inefficiency leads to the creation of *prda*.
 
-## How to Use
+## Usage
 ```
 pip install prda
 ```
@@ -22,8 +22,9 @@ Currently with the help of **ChatGPT**, you can just tailor the input of demonst
 
 
 
-## Examples
+### Examples of Useage
 
+1. #### For Visulization
 ```python
 import prda
 import pandas as pd
@@ -79,7 +80,24 @@ And code with the above DataFrame will draw anther plot look like this:
 
 [demo_lineplot.html](/demo/demo_lineplot.html)
 
-Although the current *prda* is far from completion, let along perfection. It is under improvement regularly.
+---
+2. #### For Data Preparation
+Code for filtering continuous variables in data with unique-value threshold of 5:
+```python
+from prda import prep
+prep.select_continuous_variables(data, unique_threshold=5)
+```
+
+3. #### For Machine Learning
+Code for evaluating hyperparameters combinations for a given algorithm using user-specified cross-validation method:
+```python
+from prda.ml import evaluations
+param_grid = {'k': [4,5,6,7]}
+evaluations.evaluate_param_combinations(X, y, knn_algorithm, param_grid=param_grid, cv=10, visualize_results=True)
+```
+
+
+The `prda`'s methods are quite self-explanatory, as a result, we think providing the above demonstration is suffice at the moment. Although the current *prda* is far from completion, let along perfection. It is under improvement regularly.
 
 ----
 ## Updates

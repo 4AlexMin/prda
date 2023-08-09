@@ -182,9 +182,9 @@ def select_continuous_variables(data, unique_threshold=10):
     Parameters
     ----------
     data : pd.DataFrame or np.ndarray
-        _description_
+        The input data.
     unique_threshold : int, optional
-        _description_, by default 10
+        number of unique values larger than `unique_threshold` will be considered as continuous, by default 10
 
     Returns
     -------

@@ -119,19 +119,21 @@ def get_distribution(popul, popul_type: str = 'continuous', n_intervals: int=Non
 
 
 def compute_probabilities(X, h=0.5):
-    """_summary_
+    """
+    Compute sample-wise probability estimates using Kernel Density Estimation (KDE).
 
     Parameters
     ----------
-    X : _type_
-        _description_
+    X : array-like, shape (n_samples, n_features)
+        The input data points on which to compute probabilities.
     h : float, optional
-        bandwidth of Gaussian kernel, by default 0.5
+        Bandwidth of the Gaussian kernel used in KDE, by default 0.5.
 
     Returns
     -------
-    _type_
-        _description_
+    probabilities : array-like, shape (n_samples,)
+        The estimated probabilities for each data point in X.
+        The probabilities are normalized to sum to 1.
     """
     if X.ndim == 1:
         X = X.reshape(-1, 1)

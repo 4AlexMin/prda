@@ -2,6 +2,7 @@ import numpy as np
 from sklearn.model_selection import GridSearchCV
 import matplotlib.pyplot as plt
 from sklearn.model_selection import cross_val_score
+from sklearn.metrics import make_scorer, accuracy_score, f1_score, matthews_corrcoef, cohen_kappa_score
 
 __all__ = ['test_algorithm_performance', 'evaluate_param_combinations']
 
@@ -19,8 +20,8 @@ def test_algorithm_performance(algorithm, X, y, scoring_metric='accuracy', cv=10
         The input features of the dataset.
     y : array-like
         The target labels of the dataset.
-    scoring_metric : str, callable, list/tuple or dict, default='accuracy'
-        A string (see scikit-learn documentation) or a scorer callable object / function with signature scorer(estimator, X, y).
+    scoring_metric : str, optional
+        The scoring metric to use. Possible values are 'accuracy', 'f1', 'mcc' (Matthew's correlation coefficient), 'kappa' (Cohen's kappa).
     cv : int or cross-validation generator, default=10
         Determines the cross-validation splitting strategy. Possible inputs for cv are:
             - None, to use the default 10-fold cross-validation,
@@ -30,25 +31,36 @@ def test_algorithm_performance(algorithm, X, y, scoring_metric='accuracy', cv=10
     fit_model : bool, optional
         Whether to fit the model on the entire dataset before cross-validation. Default is True.
 
-
     Returns:
     --------
     float
-        The average accuracy score across the 10 folds.
+        The average score across the 10 folds based on the specified scoring metric.
     """
     
-
     if fit_model:
         # Fit the algorithm on the entire dataset
         algorithm.fit(X, y)
     
+    # Define scoring methods based on scoring_metric
+    scoring_methods = {
+        'accuracy': 'accuracy',
+        'f1': 'f1_macro',
+        'mcc': make_scorer(matthews_corrcoef),
+        'kappa': make_scorer(cohen_kappa_score),
+    }
+    
+    if scoring_metric not in scoring_methods:
+        raise ValueError("Invalid scoring_metric. Supported values are 'accuracy', 'f1', 'mcc', 'kappa'.")
+    
     # Perform 10-fold cross-validation
-    cv_scores = cross_val_score(algorithm, X, y, cv=cv, scoring=scoring_metric)
+    cv_scores = cross_val_score(algorithm, X, y, cv=cv, scoring=scoring_methods[scoring_metric])
 
-    # Calculate the average accuracy score
-    avg_accuracy = cv_scores.mean()
+    # Calculate the average score based on the specified scoring metric
+    avg_score = cv_scores.mean()
 
-    return avg_accuracy
+    return avg_score
+
+
 
 
 def evaluate_param_combinations(X, y, algorithm, param_grid, scoring_metric='accuracy', cv=5, visualize_results=False):
@@ -87,7 +99,17 @@ def evaluate_param_combinations(X, y, algorithm, param_grid, scoring_metric='acc
             - 'mean_train_score': the mean score over the cv folds for each parameter combination on the train set.
             - 'std_train_score': the standard deviation over the cv folds for each parameter combination on the train set.
     """
-    grid_search = GridSearchCV(algorithm, param_grid=param_grid, scoring=scoring_metric, cv=cv, return_train_score=True)
+    scoring_methods = {
+        'accuracy': 'accuracy',
+        'f1': 'f1_macro',
+        'mcc': make_scorer(matthews_corrcoef),
+        'kappa': make_scorer(cohen_kappa_score),
+    }
+    if scoring_metric not in scoring_methods:
+        raise ValueError("Invalid scoring_metric. Supported values are 'accuracy', 'f1', 'mcc', 'kappa'.")
+
+
+    grid_search = GridSearchCV(algorithm, param_grid=param_grid, scoring=scoring_methods[scoring_metric], cv=cv, return_train_score=True)
     grid_search.fit(X, y)
 
     cv_results = {
